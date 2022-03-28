@@ -25,6 +25,7 @@ class RSAppCenterDestination: RSDestinationPlugin {
                 if let transmissionLevel = config["transmissionLevel"] as? String, !transmissionLevel.isEmpty, let interval = Int(transmissionLevel) {
                     Analytics.transmissionInterval = UInt(interval) * 60
                 }
+                AppCenter.logLevel = getLogLevel(rsLogLevel: client?.configuration.logLevel ?? .none)
                 AppCenter.start(withAppSecret: appSecret, services: [Analytics.self])
                 if let eventPriorityList = config["eventPriorityMap"] as? [[String: String]] {
                     var eventPriorityDict = [String: String]()
@@ -103,6 +104,23 @@ extension RSAppCenterDestination {
             return params
         }
         return nil
+    }
+    
+    func getLogLevel(rsLogLevel: RSLogLevel) -> LogLevel {
+        switch rsLogLevel {
+        case .verbose:
+            return .verbose
+        case .debug:
+            return .debug
+        case .info:
+            return .info
+        case .warning:
+            return .warning
+        case .error:
+            return .error
+        case .none:
+            return .none
+        }
     }
 }
 
