@@ -10,12 +10,12 @@ PODS:
   - RudderAppCenter (1.0.0):
     - AppCenter (= 4.4.1)
     - RudderStack
-  - RudderStack (1.0.0-beta.2)
+  - RudderStack (1.0.0-beta.3)
 
 DEPENDENCIES:
   - AppCenter (= 4.4.1)
   - RudderAppCenter (from `.`)
-  - RudderStack (from `~/Documents/Rudder/RudderStack-Cocoa/`)
+  - RudderStack (from `~/Documents/Rudder/RudderStack-Swift/`)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -25,13 +25,13 @@ EXTERNAL SOURCES:
   RudderAppCenter:
     :path: "."
   RudderStack:
-    :path: "~/Documents/Rudder/RudderStack-Cocoa/"
+    :path: "~/Documents/Rudder/RudderStack-Swift/"
 
 SPEC CHECKSUMS:
   AppCenter: b0b6f1190215b5f983c42934db718f3b46fff3c0
   RudderAppCenter: 4fc0967f6c35ab1ed5d605c19aa520f2e44a3341
-  RudderStack: a8d61f92379d6b230a6c7ff302e7f923db5329fc
+  RudderStack: 7e120a03736b0021f56a504c0966b95ffa9f5bcb
 
-PODFILE CHECKSUM: e94ad25ff4ccad1a0c5fb6b354e77d6530b88338
+PODFILE CHECKSUM: 4ea3824d1412776a052a4eb8162fec39777f3b3d
 
 COCOAPODS: 1.11.2
