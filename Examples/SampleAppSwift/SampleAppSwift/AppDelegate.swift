@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         client = RSClient(config: config)
 
-        client?.add(destination: RudderAppCenterDestination())
+        client?.addDestination(RudderAppCenterDestination())
         client?.track("Track 1")
         
         client?.identify("test_user_id_2")
