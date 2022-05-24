@@ -7,31 +7,30 @@ PODS:
   - AppCenter/Core (4.4.1)
   - AppCenter/Crashes (4.4.1):
     - AppCenter/Core
+  - Rudder (2.0.1)
   - RudderAppCenter (1.0.0):
     - AppCenter (= 4.4.1)
-    - RudderStack
-  - RudderStack (1.0.0-beta.3)
+    - Rudder (~> 2.0.0)
 
 DEPENDENCIES:
   - AppCenter (= 4.4.1)
+  - Rudder
   - RudderAppCenter (from `.`)
-  - RudderStack (from `~/Documents/Rudder/RudderStack-Swift/`)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - AppCenter
+    - Rudder
 
 EXTERNAL SOURCES:
   RudderAppCenter:
     :path: "."
-  RudderStack:
-    :path: "~/Documents/Rudder/RudderStack-Swift/"
 
 SPEC CHECKSUMS:
   AppCenter: b0b6f1190215b5f983c42934db718f3b46fff3c0
-  RudderAppCenter: 4fc0967f6c35ab1ed5d605c19aa520f2e44a3341
-  RudderStack: 7e120a03736b0021f56a504c0966b95ffa9f5bcb
+  Rudder: e16a7f96f253e1d9e290a1fe544570e4784fce68
+  RudderAppCenter: 95816e0964511735fb30e8aa24cda34cd0afd67d
 
-PODFILE CHECKSUM: 4ea3824d1412776a052a4eb8162fec39777f3b3d
+PODFILE CHECKSUM: cc4f44ab36b1305fc3275461cb9739f2835899dc
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3
