@@ -20,43 +20,25 @@ class RSAppCenterDestination: RSDestinationPlugin {
         
     func update(serverConfig: RSServerConfig, type: UpdateType) {
         guard type == .initial else { return }
-        if let destination = serverConfig.getDestination(by: key), let config = destination.config?.dictionaryValue {
-            if let appSecret = config["appSecret"] as? String {
-                if let transmissionLevel = config["transmissionLevel"] as? String, !transmissionLevel.isEmpty, let interval = Int(transmissionLevel) {
-                    Analytics.transmissionInterval = UInt(interval) * 60
-                }
-                AppCenter.logLevel = getLogLevel(rsLogLevel: client?.configuration.logLevel ?? .none)
-                AppCenter.start(withAppSecret: appSecret, services: [Analytics.self])
-                if let eventPriorityList = config["eventPriorityMap"] as? [[String: String]] {
-                    var eventPriorityDict = [String: String]()
-                    for eventPriority in eventPriorityList {
-                        if let from = eventPriority["from"], let to = eventPriority["to"], !from.isEmpty, !to.isEmpty {
-                            eventPriorityDict[from] = to
-                        }
-                    }
-                    if !eventPriorityDict.isEmpty {
-                        self.eventPriorityDict = eventPriorityDict
-                    }
-                }
-            }
+        guard let appCenterConfig: RudderAppCenterConfig = serverConfig.getConfig(forPlugin: self) else {
+            client?.log(message: "Failed to Initialize AppCenter Factory", logLevel: .warning)
+            return
         }
-    }
-    
-    func identify(message: IdentifyMessage) -> IdentifyMessage? {
-        client?.log(message: "MessageType is not supported", logLevel: .warning)
-        return message
+        if !appCenterConfig.transmissionLevel.isEmpty, let interval = Int(appCenterConfig.transmissionLevel) {
+            Analytics.transmissionInterval = UInt(interval) * 60
+        }
+        AppCenter.logLevel = getLogLevel(rsLogLevel: client?.configuration?.logLevel ?? .none)
+        AppCenter.start(withAppSecret: appCenterConfig.appSecret, services: [Analytics.self])
+        self.eventPriorityDict = appCenterConfig.eventPriorityMap
+        client?.log(message: "Initializing AppCenter SDK", logLevel: .debug)
     }
     
     func track(message: TrackMessage) -> TrackMessage? {
-        if let eventPriorityDict = eventPriorityDict {
-            if let flag = eventPriorityDict[message.event] {
-                if flag == "Normal" {
-                    Analytics.trackEvent(message.event, withProperties: extractProperties(message.properties), flags: .normal)
-                } else {
-                    Analytics.trackEvent(message.event, withProperties: extractProperties(message.properties), flags: .critical)
-                }
-            } else {
-                Analytics.trackEvent(message.event, withProperties: extractProperties(message.properties))
+        if let eventPriorityDict = eventPriorityDict, let flag = eventPriorityDict[message.event] {
+            if flag == "Normal" {
+                Analytics.trackEvent(message.event, withProperties: extractProperties(message.properties), flags: .normal)
+            } else if flag == "Critical" {
+                Analytics.trackEvent(message.event, withProperties: extractProperties(message.properties), flags: .critical)
             }
         } else {
             Analytics.trackEvent(message.event, withProperties: extractProperties(message.properties))
@@ -66,16 +48,6 @@ class RSAppCenterDestination: RSDestinationPlugin {
     
     func screen(message: ScreenMessage) -> ScreenMessage? {
         Analytics.trackEvent("Viewed \(message.name) screen", withProperties: extractProperties(message.properties))
-        return message
-    }
-    
-    func group(message: GroupMessage) -> GroupMessage? {
-        client?.log(message: "MessageType is not supported", logLevel: .warning)
-        return message
-    }
-    
-    func alias(message: AliasMessage) -> AliasMessage? {
-        client?.log(message: "MessageType is not supported", logLevel: .warning)
         return message
     }
 }
@@ -88,22 +60,10 @@ extension RSAppCenterDestination {
         if let properties = properties {
             params = [String: String]()
             for (key, value) in properties {
-                switch value {
-                case let v as String:
-                    params?[key] = v
-                case let v as Int:
-                    params?[key] = "\(v)"
-                case let v as Double:
-                    params?[key] = "\(v)"
-                default:
-                    params?[key] = "\(value)"
-                }
+                params?[key] = "\(value)"
             }
         }
-        if params?.isEmpty == false {
-            return params
-        }
-        return nil
+        return params
     }
     
     func getLogLevel(rsLogLevel: RSLogLevel) -> LogLevel {
@@ -121,6 +81,39 @@ extension RSAppCenterDestination {
         case .none:
             return .none
         }
+    }
+}
+
+struct RudderAppCenterConfig: Codable {
+    struct RSDictionary: Codable {
+        let to: String?
+        let from: String?
+    }
+    
+    private let _appSecret: String?
+    var appSecret: String {
+        return _appSecret ?? ""
+    }
+    
+    private let _transmissionLevel: String?
+    var transmissionLevel: String {
+        return _transmissionLevel ?? ""
+    }
+    
+    private var _eventPriorityMap: [RSDictionary]?
+    var eventPriorityMap: [String: String] {
+        var eventPriorityMapDict = [String: String]()
+        if let from: [String] = _eventPriorityMap?.map({String($0.from ?? "") }),
+           let to: [String] = _eventPriorityMap?.map({String($0.to ?? "") }) {
+            eventPriorityMapDict = Dictionary(uniqueKeysWithValues: zip(from, to))
+        }
+        return eventPriorityMapDict
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case _appSecret = "appSecret"
+        case _transmissionLevel = "transmissionLevel"
+        case _eventPriorityMap = "eventPriorityMap"
     }
 }
 
