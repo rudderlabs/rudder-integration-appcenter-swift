@@ -1,43 +1,36 @@
-<p align="center">
-  <a href="https://rudderstack.com/">
-    <img src="https://user-images.githubusercontent.com/59817155/121357083-1c571300-c94f-11eb-8cc7-ce6df13855c9.png">
-  </a>
-</p>
+# What is RudderStack?
 
-<p align="center"><b>The Customer Data Platform for Developers</b></p>
+[RudderStack](https://rudderstack.com/) is a **customer data pipeline** tool for collecting, routing and processing data from your websites, apps, cloud tools, and data warehouse.
 
-<p align="center">
-  <b>
-    <a href="https://rudderstack.com">Website</a>
-    ·
-    <a href="">Documentation</a>
-    ·
-    <a href="https://rudderstack.com/join-rudderstack-slack-community">Community Slack</a>
-  </b>
-</p>
+More information on RudderStack can be found [here](https://github.com/rudderlabs/rudder-server).
 
----
+## Integrating Visual Studio App Center with RudderStack's iOS SDK
 
-# \*\*Repo Name\*\*
+[App Center](https://appcenter.ms/) is Microsoft's cross-platform build automation and management platform that lets you seamlessly manage your app's lifecycle. With App Center, you can easily manage and automate your builds, effectively test your apps in the cloud, and monitor their real-time usage with the help of crash data and analytics.
 
-\*\*Repo description\*\*
+1. Add App Center as destination from Rudder Dashboard and add the app secret key.
 
-## Overview
+2. Rudder-AppCenter is available through [CocoaPods](https://cocoapods.org). To install
+it, simply add the following line to your Podfile:
 
-\*\*Describe what the software does.\*\*
+```ruby
+pod 'Rudder-AppCenter'
+```
 
-## Features
+## Initialize ```RudderClient```
 
-\*\*Describe the key features, if necessary.\*\*
+Put this code in your ```AppDelegate.m``` file under the method ```didFinishLaunchingWithOptions```
+```
+RSConfigBuilder *builder = [[RSConfigBuilder alloc] init];
+[builder withDataPlaneUrl:<YOUR_DATA_PLANE_URL>];
+[builder withFactory:[RudderAppCenterFactory instance]];
+[RSClient getInstance:<YOUR_WRITE_KEY> config:[builder build]];
+```
 
-## Getting started
+## Send Events
 
-\*\*Describe how to use the software.\*\*
+Follow the steps from the [RudderStack iOS SDK](https://github.com/rudderlabs/rudder-sdk-ios).
 
-## Contribute
+## Contact Us
 
-We would love to see you contribute to RudderStack. Get more information on how to contribute [**here**](CONTRIBUTING.md).
-
-## License
-
-The RudderStack \*\*software name\*\* is released under the [**MIT License**](https://opensource.org/licenses/MIT).
+If you come across any issues while configuring or using this integration, please feel free to start a conversation on our [Slack](https://resources.rudderstack.com/join-rudderstack-slack) channel. We will be happy to help you.
