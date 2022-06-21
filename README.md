@@ -40,7 +40,7 @@ For more information on configuring Firebase as a destination in RudderStack and
 ```ruby
 pod 'RudderAppCenter', '~> 1.0.0'
 ```
-4. Run the `pod install` command.
+3. Run the `pod install` command.
 
 ## Step 2: Import the SDK
 
