@@ -10,18 +10,16 @@ end
 
 target 'RudderAppCenter' do
     project 'RudderAppCenter.xcodeproj'
-    shared_pods
-    pod 'AppCenter' , '4.4.1'
+    pod 'Rudder', '~> 2.0'
+    pod 'AppCenter', '4.4.1'
 end
 
 target 'SampleAppObjC' do
     project 'Examples/SampleAppObjC/SampleAppObjC.xcodeproj'
-    shared_pods
     pod 'RudderAppCenter', :path => '.'
 end
 
 target 'SampleAppSwift' do
     project 'Examples/SampleAppSwift/SampleAppSwift.xcodeproj'
-    shared_pods
     pod 'RudderAppCenter', :path => '.'
 end

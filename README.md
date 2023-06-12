@@ -38,7 +38,7 @@ For more information on configuring Firebase as a destination in RudderStack and
 2. `RudderAppCenter` is available through [CocoaPods](https://cocoapods.org). To install it, add the following line to your `Podfile`:
 
 ```ruby
-pod 'RudderAppCenter', '~> 1.0.0'
+pod 'RudderAppCenter', '~> 1.1.0'
 ```
 4. Run the `pod install` command.
 

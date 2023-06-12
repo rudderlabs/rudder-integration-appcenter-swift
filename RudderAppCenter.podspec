@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name             = 'RudderAppCenter'
-    s.version          = '1.0.0'
+    s.version          = '1.1.0'
     s.summary          = 'Privacy and Security focused Segment-alternative. AppCenter Native SDK integration support.'
 
     s.description      = <<-DESC
@@ -22,6 +22,6 @@ Rudder is a platform for collecting, storing and routing customer event data to 
         
     s.static_framework = true
     
-    s.dependency 'Rudder', '~> 2.0.0'
+    s.dependency 'Rudder', '~> 2.0'
     s.dependency 'AppCenter' , '4.4.1'
 end
